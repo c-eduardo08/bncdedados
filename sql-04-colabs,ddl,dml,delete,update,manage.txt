@@ -1,0 +1,114 @@
+-- criar base de dados:
+create database eduardo_dml;
+-- ativar a base
+use eduardo_dml;
+
+-- criar a tabela colaborador:
+create table tb_colaborador (
+cod int,
+cpf varchar(14),
+nome varchar(12) not null,
+nascimento date,
+sexo char(1),
+primary key(cod)
+);
+
+-- Criar tabela salario:
+create table salario(
+id int auto_increment,
+cargo varchar(10),
+valor decimal(6,2),
+cod_colab int,
+primary key(id),
+foreign key(cod_colab)
+references tb_colaborador(cod) on delete restrict
+);
+
+
+-- Alterando nome da tabela salario:
+rename table salario to tb_salario;
+
+-- DML ( INSERT / UPDATE / DELETE)
+-- Inserir dados na tabela colaborador
+
+insert into tb_colaborador
+(cod,cpf,nome,nascimento,sexo) values
+(101, '111.222', 'eduardo', '2004-11-23','m');
+
+-- verificando se dados foram inseridos
+select * from tb_colaborador;
+
+insert into tb_colaborador values
+(102,'222.333', 'maria','2001-04-18', 'f');
+
+insert into tb_colaborador (nascimento, sexo, cod, cpf, nome)
+values  ('2003-05-10', 'f', 115, '333.444', 'luiza');
+
+select * from tb_colaborador;
+insert into tb_colaborador
+(cod, nome, sexo) values
+(103, 'carlos', 'm');
+-- codigo dependente da pk e da coluna obrigatoria. ( sem isso nao sera incrementado)
+
+select * from tb_colaborador;
+
+insert into tb_colaborador (cod, nascimento, sexo) values
+(116,'2000-08-29', 'm');
+-- esse nao sera adicionado.
+-- codigo dependente da pk e da coluna obrigatoria. ( sem isso nao sera incrementado) no caso : nome e cod.
+
+select * from tb_colaborador;
+
+
+insert into tb_colaborador (cod, nome)
+values ( 110, 'Joao de deus'),
+(120, 'Marina'), (121, 'Joao gomes');
+
+select * from tb_colaborador;
+
+
+-- Inserir dados na tabela salario
+insert into tb_salario (cargo, valor) values ('Analista', 5000.47);
+select * from tb_ salario;
+
+insert into tb_salario(id, cargo, valor) values (50, 'Dev', 5432.25);
+select * from tb_salario;
+
+insert into tb_salario(id,cargo,valor,cod_colab) values (20, 'GP', 4895.31, 115);
+select * from tb_salario;
+
+insert into tb_salario(cargo, valor, cod_colab) values ('PO', 4895.31, 103);
+select * from tb_salario;
+
+-- Atualizar dados da tabela - update
+update tb_colaborador set sexo = 'M'
+where cod = 102;
+
+select * from tb_colaborador;
+
+update tb_colaborador set sexo = null where cod < 110;
+
+update tb_salario set valor = 2400.50 where= 103;
+
+update tb_salario set cod_colaborador = 1 where id = 11;
+
+update tb_salario set valor = 1320;
+
+set sql_safe_updates = 0; -- DESABILIT MODO SEGURO
+
+select * from tb_salario;
+
+set sql_safe_updates = 1; -- HABILITYA MOOD SEGURO
+
+-- APAGAR DADOS DA TABELA DELETE
+select * from tb_colaborador;
+delete tb_colaborador where cod = 101;
+
+delete from tb_salario where id =51;
+select * from tb_salario;
+
+
+
+
+
+
